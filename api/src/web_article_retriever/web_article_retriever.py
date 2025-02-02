@@ -3,6 +3,9 @@ A class that can connect to the internet in order to get the urls of interesting
 """
 
 class WebArticleRetriever:
+    """
+    A class that can connect to the internet in order to get the urls of interesting websites and their content
+    """
     def __init__(self):
         pass
 
@@ -24,3 +27,4 @@ class WebArticleRetriever:
         output:
             (str)
         """
+        pass

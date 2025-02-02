@@ -9,4 +9,4 @@ class OpenAIClient(LLMClient):
     Inherits from LLMClient. Redefines methods to call the model with the appropriate OpenAI credentials
     """
     def __init__(self):
-        pass        
+        super().__init__(self) 
