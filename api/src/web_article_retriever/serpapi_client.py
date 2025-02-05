@@ -24,31 +24,31 @@ class SerpApiRetriever(WebArticleRetriever):
     
     def set_api_key(self, api_key):
         """
-        Sets the api key to do requests in SepApi
+        Sets the api key to do requests in SerpApi
         """
         self.params["api_key"] = api_key
     
     def set_google_language(self, language):
         """
-        Sets the google ui language to do requests in SepApi
+        Sets the google ui language to do requests in SerpApi
         """
         self.params["hl"] = language
     
     def set_google_country(self, country_code):
         """
-        Sets the google country_code to do requests in SepApi
+        Sets the google country_code to do requests in SerpApi
         """
         self.params["gl"] = country_code
     
     def set_location(self, location):
         """
-        Sets the google location to do requests in SepApi
+        Sets the google location to do requests in SerpApi
         """
         self.params["location"] = location
     
     def set_num_answer(self, num):
         """
-        Sets the number of research results in SepApi
+        Sets the number of research results in SerpApi
         """
         self.params["num"] = num
     
@@ -59,4 +59,3 @@ class SerpApiRetriever(WebArticleRetriever):
         self.params["q"] = query
         search = GoogleSearch(self.params)
         results = search.get_dict()
-    

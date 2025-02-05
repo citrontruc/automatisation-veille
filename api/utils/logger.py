@@ -9,6 +9,9 @@ import structlog
 
 
 class Logger:
+    """
+    An object to log actions and errors.
+    """
     def __init__(self):
         structlog.configure(
             processors=[
@@ -23,7 +26,7 @@ class Logger:
             wrapper_class=structlog.make_filtering_bound_logger(logging.NOTSET),
             context_class=dict,
             logger_factory=structlog.WriteLoggerFactory(
-                file=Path(f"{datetime.today().strftime('%Y-%m-%d')}_logs").with_suffix(".log").open("wt")
+                file=Path(f"logs/{datetime.today().strftime('%Y-%m-%d')}_logs").with_suffix(".log").open("wt")
             ),
             cache_logger_on_first_use=False
         )

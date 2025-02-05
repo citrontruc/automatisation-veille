@@ -2,18 +2,32 @@
 An object to check user credentials depending on authentication method
 """
 
+from dotenv import load_dotenv
+from fastapi import Security
+from fastapi.security import APIKeyHeader
+import hashlib
+import os
+
+from utils.error_handler import ErrorHandler
+
+load_dotenv()
+
+
 class Authenticator:
     """
     A parent class that can be used to check user credentials (TODO)
     """
     def __init__(self):
-        pass
+        self.HASHED_API_KEY = os.getenv("HASHED_API_KEY")
+        self.error_handler = ErrorHandler()
 
-    def check_key_simple(self, input_key):
+    def check_api_key(self, api_key: str = Security(APIKeyHeader(name="Authorization", auto_error=True))):
         """
         Check if the input key corresponds to the 
         input:
-            input_key (str)
+            api_key (str)
         output:
-            Boolean
+            None
         """
+        if not hashlib.sha256(api_key.encode()).hexdigest() == self.HASHED_API_KEY:
+            self.error_handler.invalid_credentials_error()
