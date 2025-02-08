@@ -31,3 +31,9 @@ class Authenticator:
         """
         if not hashlib.sha256(api_key.encode()).hexdigest() == self.HASHED_API_KEY:
             self.error_handler.invalid_credentials_error()
+    
+    def check_access_token(self, access_token):
+        """
+        Uses Azure entra-id to check if the user access token is a valid token
+        """
+        pass

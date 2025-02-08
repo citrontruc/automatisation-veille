@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: ./app
+    ports:
+      - "8501:8501"
+    expose:
+      - '8501'
+    volumes:
+      - .:/app
+  api:
+    build:
+      context: ./api
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    expose:
+    - "8000"
