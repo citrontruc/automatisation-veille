@@ -3,7 +3,6 @@ An object to log actions and errors.
 """
 
 from datetime import datetime
-import logging
 from pathlib import Path
 import structlog
 
@@ -20,13 +19,13 @@ class Logger:
                 structlog.processors.StackInfoRenderer(),
                 structlog.dev.set_exc_info,
                 structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S", utc=False),
-                structlog.dev.ConsoleRenderer(),
+                #structlog.dev.ConsoleRenderer(),
                 structlog.processors.JSONRenderer()
             ],
-            wrapper_class=structlog.make_filtering_bound_logger(logging.NOTSET),
+            #wrapper_class=structlog.make_filtering_bound_logger(logging.NOTSET),
             context_class=dict,
             logger_factory=structlog.WriteLoggerFactory(
-                file=Path(f"logs/{datetime.today().strftime('%Y-%m-%d')}_logs").with_suffix(".log").open("wt")
+                file=Path(f"logs/{datetime.today().strftime('%Y-%m-%d')}_logs").with_suffix(".log").open("at")
             ),
             cache_logger_on_first_use=False
         )

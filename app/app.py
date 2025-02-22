@@ -11,7 +11,7 @@ if "llm_key" not in st.session_state:
     st.session_state["llm_key"] = ""
 
 # Set logo of the page
-img = Image.open('assets/img/research.png')
+img = Image.open('src/assets/img/research.png')
 st.set_page_config(page_title="Assistant veille 🔎", page_icon=img, layout="centered", initial_sidebar_state="auto", menu_items=None)
 
 def display_markdown_in_container(container, header_text, paragraph_text):

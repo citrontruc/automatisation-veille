@@ -1,2 +1,2 @@
 #!/bin/bash
-uv run main.py
+uv run src/main.py

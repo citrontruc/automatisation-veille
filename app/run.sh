@@ -1,2 +1,2 @@
 #!/bin/bash
-uv run streamlit run main.py --server.port 8501
+uv run streamlit run src/main.py --server.port 8501
