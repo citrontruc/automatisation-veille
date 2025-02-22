@@ -3,9 +3,13 @@ An object to log actions and errors.
 """
 
 from datetime import datetime
+import os
 from pathlib import Path
 import structlog
 
+
+if not os.path.exists("logs"): 
+    os.makedirs("logs")
 
 class Logger:
     """

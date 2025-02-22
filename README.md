@@ -1,4 +1,5 @@
 
+uv run -m src.main
 
 ## Image credits
 

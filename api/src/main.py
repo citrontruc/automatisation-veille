@@ -7,9 +7,9 @@ from fastapi.responses import JSONResponse
 import uvicorn
 
 # We retrieve the different routes from our application
-from endpoints.article_summarizer import router as article_summarizer_router
-from endpoints.article_retriever import router as article_retriever_router
-from template.exception.exception_template import BasicException
+from src.endpoints.article_summarizer import router as article_summarizer_router
+from src.endpoints.article_retriever import router as article_retriever_router
+from src.schemas.exception.exception_template import BasicException
 
 
 app = FastAPI(

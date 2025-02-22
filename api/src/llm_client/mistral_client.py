@@ -9,4 +9,4 @@ class MisrtalClient(LLMClient):
     Inherits from LLMClient. Redefines methods to call the model with the appropriate Mistral credentials
     """
     def __init__(self):
-        super().__init__(self) 
+        super().__init__(self)
