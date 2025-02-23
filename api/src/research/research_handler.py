@@ -21,24 +21,35 @@ class ResearchHandler:
         match search_api_type:
             case "newsapi":
                 credentials = os.getenv("NEWSAPI_KEY")
-                self.llm_client = NewsapiClient(credentials)
+                self.search_client = NewsapiClient(credentials)
             case "serpapi":
                 credentials = os.getenv("SERPAPI_KEY")
-                self.llm_client = SerpapiClient(credentials)
+                self.search_client = SerpapiClient(credentials)
             case _:
                 self.error_handler.search_api_not_supported_error(search_api_type)
     
     def search(self, topic):
         """
-        
+        Search a topic and returns the content of pages on the topic
+        input:
+            topic (str)
+        output:
+            url_list (list)
+            content_list (list)
         """
+        url_list = self.search_client.search(topic)
+        content_list = self.search_client.get_page_content(url_list)
+        return url_list, content_list
 
-    def clean_page_content(self):
+    def clean_page_content(self, content_list):
         """
         Cleans the content of a list of html page in order to make it easier to use it in our search.
         input:
-            None
+            content_list (list)
         output:
-
+            clean_content_list (list)
         """
-        pass
+        clean_content_list = []
+        for html_page in content_list:
+            clean_content_list.append(self.llm_handler.clean_html_content(html_page))
+        return clean_content_list

@@ -8,7 +8,7 @@ import os
 from llm_client.azure_openai_client import AzureOpenAIClient
 from llm_client.mistral_client import MistralClient
 from llm_client.openai_client import OpenAIClient
-from ..schemas.llm.llm_template import SummaryTemplate
+from ..schemas.llm.llm_template import ExtractionTemplate, SummaryTemplate
 from ...utils.error_handler import ErrorHandler
 
 load_dotenv()
@@ -59,7 +59,7 @@ class LLMHandler:
             (dict)
         """
         return self.llm_client.ask_structured(prompt, system_prompt, answer_schema)
-    
+
     def summarize_document(self, document_dict):
         """
         A method to summarize a document
@@ -75,3 +75,18 @@ class LLMHandler:
         For each of these sources, give an individual summary with some key information, then give a global summary of all the documents.
         Your answers should have the following form : {template_parser.get_format_instructions()}."""
         return self.ask_llm_structured(prompt, system_prompt, SummaryTemplate)
+    
+    def clean_html_content(self, html_page):
+        """
+        A method to clean an html page and return only the text as markdown
+        input:
+            html_page (str)
+        output:
+            clean_page (str)
+        """
+        template_parser = JsonOutputParser(pydantic_object=ExtractionTemplate)
+        prompt = f""" Here is the HTML page to extract content from : {html_page}.
+        Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}."""
+        system_prompt = f"""You extract the complete and unadulterated content of an html page. You should retrieve content without modifying it.
+        Your answers should have the following form : {template_parser.get_format_instructions()}."""
+        return self.ask_llm_structured(prompt, system_prompt, ExtractionTemplate)
