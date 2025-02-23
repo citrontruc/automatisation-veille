@@ -1,12 +1,17 @@
 """
 A class to handle the interactions between our API and our LLMClient
 """
+from dotenv import load_dotenv
 from langchain_core.output_parsers import JsonOutputParser
+import os
 
 from llm_client.azure_openai_client import AzureOpenAIClient
 from llm_client.mistral_client import MistralClient
 from llm_client.openai_client import OpenAIClient
 from ..schemas.llm.llm_template import SummaryTemplate
+from ...utils.error_handler import ErrorHandler
+
+load_dotenv()
 
 
 class LLMClient:
@@ -14,15 +19,22 @@ class LLMClient:
     A class to handle the interactions between our API and our LLMClient
     """
     def __init__(self, llm_type, credentials, endpoint="", deployment_id="", api_version=""):
+        self.error_handler = ErrorHandler()
         match llm_type:
             case "azure openai":
+                credentials = os.getenv("AOAI_KEY")
+                endpoint = os.getenv("AOAI_ENDPOINT")
+                deployment_id = os.getenv("AOAI_DEPLOYMENT_ID")
+                api_version = os.getenv("AOAI_API_VERSION")
                 self.llm_client = AzureOpenAIClient(credentials, endpoint, deployment_id, api_version)
             case "mistral":
+                credentials = os.getenv("MISTRAL_KEY")
                 self.llm_client = MistralClient(credentials)
             case "openai":
+                credentials = os.getenv("OPENAI_KEY")
                 self.llm_client = OpenAIClient(credentials)
             case _:
-                print("error")
+                self.error_handler.model_not_supported_error(llm_type)
     
     def ask_llm(self, prompt, system_prompt=""):
         """

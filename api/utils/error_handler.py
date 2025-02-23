@@ -19,3 +19,10 @@ class ErrorHandler:
         """
         self.logger.log_error(f"Invalid credentials.")
         raise BasicException(code=401, detail=f"Invalid credentials.")
+    
+    def model_not_supported_error(self, model_name=""):
+        """
+        Raises an error if incorrect credentials are used to access the API
+        """
+        self.logger.log_error(f"The selected LLM model is not supported : {model_name}.")
+        raise BasicException(code=500, detail=f"The selected LLM model is not supported.")
