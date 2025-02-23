@@ -3,7 +3,7 @@ A class to create an llm client that can interact with an openai model
 """
 from langchain_openai import ChatOpenAI
 
-from llm_client import LLMClient
+from src.llm.llm_client.llm_client import LLMClient
 
 
 class OpenAIClient(LLMClient):
@@ -20,5 +20,5 @@ class OpenAIClient(LLMClient):
                 max_tokens=2048,
                 seed=42,
                 temperature=0,
-                top_p = 0
+                top_p=0
             )

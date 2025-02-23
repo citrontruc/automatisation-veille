@@ -1,7 +1,7 @@
 """
 A class to handle NewsAPI queries
 
-TODO : NewsAPI lets you do all sorts of research (by popularity, by topic, by date...). Maybe have a go at this ?
+TODO : NewsAPI lets you do all sorts of research (by popularity, by topic, by date...). Try other configurations
 """
 import requests
 
@@ -20,9 +20,9 @@ class NewsapiClient(ResearchClient):
         output:
             (list)
         """
-        api_url = f"https://newsapi.org/v2/everything?q={topic}&sortBy=popularity&apiKey={self.credentials}"
+        api_url = f"https://newsapi.org/v2/everything?q={topic}&sortBy=relevancy&apiKey={self.credentials}"
         results = requests.get(api_url).json()
         page_link_list = []
-        for research_result in results["article"]:
+        for research_result in results["articles"]:
             page_link_list.append(research_result["url"])
         return page_link_list

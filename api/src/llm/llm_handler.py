@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 from langchain_core.output_parsers import JsonOutputParser
 import os
 
-from llm_client.azure_openai_client import AzureOpenAIClient
-from llm_client.mistral_client import MistralClient
-from llm_client.openai_client import OpenAIClient
-from ..schemas.llm.llm_template import ExtractionTemplate, SummaryTemplate
-from ...utils.error_handler import ErrorHandler
+from src.llm.llm_client.azure_openai_client import AzureOpenAIClient
+from src.llm.llm_client.mistral_client import MistralClient
+from src.llm.llm_client.openai_client import OpenAIClient
+from src.schemas.llm.llm_template import ExtractionTemplate, SummaryTemplate
+from utils.error_handler import ErrorHandler
 
 load_dotenv()
 
@@ -20,6 +20,7 @@ class LLMHandler:
     """
     def __init__(self, llm_type):
         self.error_handler = ErrorHandler()
+        self.MAX_LLM_INPUT_SIZE = int(os.getenv("MAX_LLM_INPUT_SIZE"))
         match llm_type:
             case "azure openai":
                 credentials = os.getenv("AOAI_KEY")
@@ -85,8 +86,25 @@ class LLMHandler:
             clean_page (str)
         """
         template_parser = JsonOutputParser(pydantic_object=ExtractionTemplate)
-        prompt = f""" Here is the HTML page to extract content from : {html_page}.
-        Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}."""
-        system_prompt = f"""You extract the complete and unadulterated content of an html page. You should retrieve content without modifying it.
-        Your answers should have the following form : {template_parser.get_format_instructions()}."""
-        return self.ask_llm_structured(prompt, system_prompt, ExtractionTemplate)
+        if len(html_page) > self.MAX_LLM_INPUT_SIZE:
+            inter_chunk_answer = {}
+            for field_name in ExtractionTemplate.model_fields:
+                inter_chunk_answer[field_name] = ""
+            for chunk_number in range(len(html_page) // self.MAX_LLM_INPUT_SIZE + 1):
+                text_chunk = html_page[max(0, chunk_number*self.MAX_LLM_INPUT_SIZE - 100):min(len(html_page), (chunk_number+1)*self.MAX_LLM_INPUT_SIZE+100)]
+                prompt = f"""Here is a chunk of an HTML page to extract content from : {text_chunk}.
+                Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}."""
+                system_prompt = f"""You extract the complete and unadulterated content of an html page. You should retrieve content without modifying it.
+                Your answers should have the following form : {template_parser.get_format_instructions()}."""
+                inter_answer = self.ask_llm_structured(prompt, system_prompt, ExtractionTemplate)
+                for field_name in inter_answer.keys():
+                    if inter_answer[field_name] != "":
+                        inter_chunk_answer[field_name] += f"chunk {chunk_number}: {inter_answer[field_name]}. "
+            print(inter_chunk_answer)
+            return inter_chunk_answer
+        else:
+            prompt = f"""Here is the HTML page to extract content from : {html_page}.
+            Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}."""
+            system_prompt = f"""You extract the complete and unadulterated content of an html page. You should retrieve content without modifying it.
+            Your answers should have the following form : {template_parser.get_format_instructions()}."""
+            return self.ask_llm_structured(prompt, system_prompt, ExtractionTemplate)

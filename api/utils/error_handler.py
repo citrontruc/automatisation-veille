@@ -33,3 +33,11 @@ class ErrorHandler:
         """
         self.logger.log_error(f"The selected search api is not supported : {api_name}.")
         raise BasicException(code=500, detail=f"The selected search api is not supported.")
+
+    def research_error(self):
+        """
+        Raises an error when the research failed
+        """
+        self.logger.log_error(f"The research in the research API failed.")
+        raise BasicException(code=500, detail=f"The research in the research API failed.")
+    

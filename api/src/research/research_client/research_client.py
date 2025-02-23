@@ -30,7 +30,11 @@ class ResearchClient(ABC):
         output:
             (list)
         """
+        page_successful = []
         page_content_list = []
         for research_url in page_link_list:
-            page_content_list.append(requests.get(research_url).content.decode())
-        return page_content_list
+            page_request = requests.get(research_url)
+            if page_request.status_code == 200:
+                page_successful.append(research_url)
+                page_content_list.append(page_request.content.decode())
+        return page_successful, page_content_list

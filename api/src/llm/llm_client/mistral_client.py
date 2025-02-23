@@ -3,7 +3,7 @@ A class to create an llm client that can interact with a mistral model
 """
 from langchain_mistralai import ChatMistralAI
 
-from llm_client import LLMClient
+from src.llm.llm_client.llm_client import LLMClient
 
 
 class MistralClient(LLMClient):
@@ -19,6 +19,6 @@ class MistralClient(LLMClient):
                 model="mistral-small-latest",
                 max_tokens=2048,
                 seed=42,
-                temperature=0,
-                top_p = 0
+                temperature=0.1,
+                top_p=0.1
             )

@@ -29,6 +29,8 @@ class Authenticator:
         output:
             None
         """
+        if not api_key:
+            self.error_handler.invalid_credentials_error()
         if not hashlib.sha256(api_key.encode()).hexdigest() == self.HASHED_API_KEY:
             self.error_handler.invalid_credentials_error()
     
