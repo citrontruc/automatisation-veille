@@ -16,7 +16,7 @@ class OpenAIClient(LLMClient):
         """
         return ChatOpenAI(
                 api_key=self.credentials,
-                model="gpt-4o",
+                model="gpt-4o-mini",
                 max_tokens=2048,
                 seed=42,
                 temperature=0,

@@ -9,7 +9,6 @@ from llm_client import LLMClient
 class AzureOpenAIClient(LLMClient):
     """
     Inherits from LLMClient. Azure AI Studio needs more than an API key to work.
-    We take parameters from dotenv file from now.
     """
     def __init__(self, endpoint, deployment_id, api_version):
         super().__init__(self)

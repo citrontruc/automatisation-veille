@@ -22,7 +22,14 @@ class ErrorHandler:
     
     def model_not_supported_error(self, model_name=""):
         """
-        Raises an error if incorrect credentials are used to access the API
+        Raises an error if the desired llm model is not supported yet.
         """
         self.logger.log_error(f"The selected LLM model is not supported : {model_name}.")
         raise BasicException(code=500, detail=f"The selected LLM model is not supported.")
+    
+    def search_api_not_supported_error(self, api_name=""):
+        """
+        Raises an error if the desired search api is not supprted yet.
+        """
+        self.logger.log_error(f"The selected search api is not supported : {api_name}.")
+        raise BasicException(code=500, detail=f"The selected search api is not supported.")

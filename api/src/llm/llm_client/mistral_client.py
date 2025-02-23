@@ -16,7 +16,7 @@ class MistralClient(LLMClient):
         """
         return ChatMistralAI(
                 api_key=self.credentials,
-                model="mistral-large-latest",
+                model="mistral-small-latest",
                 max_tokens=2048,
                 seed=42,
                 temperature=0,

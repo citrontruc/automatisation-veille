@@ -14,11 +14,11 @@ from ...utils.error_handler import ErrorHandler
 load_dotenv()
 
 
-class LLMClient:
+class LLMHandler:
     """
     A class to handle the interactions between our API and our LLMClient
     """
-    def __init__(self, llm_type, credentials, endpoint="", deployment_id="", api_version=""):
+    def __init__(self, llm_type):
         self.error_handler = ErrorHandler()
         match llm_type:
             case "azure openai":
