@@ -6,8 +6,8 @@ from fastapi import APIRouter, Request
 import json
 
 from src.schemas.input.input_template import SummarizationInputSchema
-from utils.authenticator import Authenticator
-from utils.logger import Logger
+from src.utils.authenticator import Authenticator
+from src.utils.logger import Logger
 
 
 # We define all the routes related to document treatment

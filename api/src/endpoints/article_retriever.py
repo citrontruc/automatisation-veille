@@ -8,8 +8,8 @@ import json
 from src.schemas.input.input_template import ResearchInputSchema
 from src.schemas.output.output_template import ResearchOutputSchema
 from src.research.research_handler import ResearchHandler
-from utils.authenticator import Authenticator
-from utils.logger import Logger
+from src.utils.authenticator import Authenticator
+from src.utils.logger import Logger
 
 
 # We define all the routes related to document treatment

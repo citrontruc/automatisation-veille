@@ -7,7 +7,7 @@ import os
 from src.research.research_client.newsapi_client import NewsapiClient
 from src.research.research_client.serpapi_client import SerpapiClient
 from src.llm.llm_handler import LLMHandler
-from utils.error_handler import ErrorHandler
+from src.utils.error_handler import ErrorHandler
 
 load_dotenv()
 

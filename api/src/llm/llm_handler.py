@@ -9,7 +9,7 @@ from src.llm.llm_client.azure_openai_client import AzureOpenAIClient
 from src.llm.llm_client.mistral_client import MistralClient
 from src.llm.llm_client.openai_client import OpenAIClient
 from src.schemas.llm.llm_template import ExtractionTemplate, SummaryTemplate
-from utils.error_handler import ErrorHandler
+from src.utils.error_handler import ErrorHandler
 
 load_dotenv()
 

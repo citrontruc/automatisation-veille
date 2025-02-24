@@ -3,7 +3,7 @@ Handles error cases and returns the appropriate error codes.
 """
 
 from src.schemas.exception.exception_template import BasicException
-from utils.logger import Logger
+from src.utils.logger import Logger
 
 
 class ErrorHandler:
