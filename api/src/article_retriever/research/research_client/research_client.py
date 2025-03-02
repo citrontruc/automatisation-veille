@@ -2,6 +2,7 @@
 An abstract class to handle research on internet.
 """
 from abc import ABC, abstractmethod
+from bs4 import BeautifulSoup
 import requests
 
 class ResearchClient(ABC):
@@ -35,6 +36,8 @@ class ResearchClient(ABC):
         for research_url in page_link_list:
             page_request = requests.get(research_url)
             if page_request.status_code == 200:
+                soup = BeautifulSoup(page_request.content, 'html.parser')
+                text = soup.get_text(separator='\n', strip=True)
                 page_successful.append(research_url)
-                page_content_list.append(page_request.content.decode())
+                page_content_list.append(text)
         return page_successful, page_content_list

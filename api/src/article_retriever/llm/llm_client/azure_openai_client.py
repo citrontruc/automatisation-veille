@@ -10,11 +10,12 @@ class AzureOpenAIClient(LLMClient):
     """
     Inherits from LLMClient. Azure AI Studio needs more than an API key to work.
     """
-    def __init__(self, endpoint, deployment_id, api_version):
-        super().__init__(self)
+    def __init__(self, credentials, endpoint, deployment_id, api_version):
+        self.credentials = credentials
         self.endpoint = endpoint
         self.deployment_id = deployment_id
         self.api_version = api_version
+        super().__init__(credentials)
     
     def _create_llm(self):
         """

@@ -74,7 +74,9 @@ class LLMHandler:
         Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}."""
         system_prompt = f"""You are a summarizer. Your role is to extract the key information from a list of sources.
         For each of these sources, give an individual summary with some key information, then give a global summary of all the documents.
-        Your answers should have the following form : {template_parser.get_format_instructions()}."""
+        Your answers should have the following form : {template_parser.get_format_instructions()}.
+        IMPORTANT : 
+        - **DO NOT** add any fields other than the ones specified."""
         return self.ask_llm_structured(prompt, system_prompt, SummaryTemplate)
     
     def clean_html_content(self, html_page):
@@ -95,16 +97,22 @@ class LLMHandler:
                 prompt = f"""Here is a chunk of an HTML page to extract content from : {text_chunk}.
                 Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}."""
                 system_prompt = f"""You extract the complete and unadulterated content of an html page. You should retrieve content without modifying it.
-                Your answers should have the following form : {template_parser.get_format_instructions()}."""
+                Your answers should have the following form : {template_parser.get_format_instructions()}.
+                IMPORTANT : 
+                - **DO NOT** add any fields other than the ones specified."""
                 inter_answer = self.ask_llm_structured(prompt, system_prompt, ExtractionTemplate)
                 for field_name in inter_answer.keys():
                     if inter_answer[field_name] != "":
                         inter_chunk_answer[field_name] += f"chunk {chunk_number}: {inter_answer[field_name]}. "
-            print(inter_chunk_answer)
+                print(inter_answer)
             return inter_chunk_answer
         else:
             prompt = f"""Here is the HTML page to extract content from : {html_page}.
             Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}."""
             system_prompt = f"""You extract the complete and unadulterated content of an html page. You should retrieve content without modifying it.
-            Your answers should have the following form : {template_parser.get_format_instructions()}."""
-            return self.ask_llm_structured(prompt, system_prompt, ExtractionTemplate)
+            Your answers should have the following form : {template_parser.get_format_instructions()}.
+            IMPORTANT : 
+            - **DO NOT** add any fields other than the ones specified."""
+            answer = self.ask_llm_structured(prompt, system_prompt, ExtractionTemplate)
+            print(answer)
+            return answer

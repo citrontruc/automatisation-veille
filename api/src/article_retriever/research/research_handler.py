@@ -53,5 +53,6 @@ class ResearchHandler:
         """
         clean_content_list = []
         for html_page in content_list:
+            print("test")
             clean_content_list.append(self.llm_handler.clean_html_content(html_page))
         return clean_content_list

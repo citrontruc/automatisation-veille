@@ -14,7 +14,7 @@ class ExtractionTemplate(BaseModel):
     title: str = Field("The title of the article. If you don't find the information, return ''.")
     #date: datetime.date = Field("The date the article was written on.")
     date: str = Field("The date the article was written on. If you don't find the information, return ''.")
-    content: str = Field("The complete and unadulterated content of the article. If you don't find the information, return ''.")
+    content: str = Field("The main content of the article without login buttons, recommended reads... If you don't find the information, return ''.")
 
 class IndividualSummaryTemplate(BaseModel):
     """
