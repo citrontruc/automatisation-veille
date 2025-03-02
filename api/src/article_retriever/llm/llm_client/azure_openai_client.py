@@ -3,7 +3,7 @@ A class to create an llm client that can interact with an azure AI Studio model
 """
 from langchain_azure_ai.chat_models import AzureAIChatCompletionsModel
 
-from src.llm.llm_client.llm_client import LLMClient
+from src.article_retriever.llm.llm_client.llm_client import LLMClient
 
 
 class AzureOpenAIClient(LLMClient):

@@ -4,10 +4,10 @@ A class to handle the interactions between our API and our Research client
 from dotenv import load_dotenv
 import os
 
-from src.research.research_client.newsapi_client import NewsapiClient
-from src.research.research_client.serpapi_client import SerpapiClient
-from src.llm.llm_handler import LLMHandler
-from src.utils.error_handler import ErrorHandler
+from src.article_retriever.research.research_client.newsapi_client import NewsapiClient
+from src.article_retriever.research.research_client.serpapi_client import SerpapiClient
+from src.article_retriever.llm.llm_handler import LLMHandler
+from src.article_retriever.utils.error_handler import ErrorHandler
 
 load_dotenv()
 

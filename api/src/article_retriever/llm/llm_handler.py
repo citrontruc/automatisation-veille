@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 from langchain_core.output_parsers import JsonOutputParser
 import os
 
-from src.llm.llm_client.azure_openai_client import AzureOpenAIClient
-from src.llm.llm_client.mistral_client import MistralClient
-from src.llm.llm_client.openai_client import OpenAIClient
-from src.schemas.llm.llm_template import ExtractionTemplate, SummaryTemplate
-from src.utils.error_handler import ErrorHandler
+from src.article_retriever.llm.llm_client.azure_openai_client import AzureOpenAIClient
+from src.article_retriever.llm.llm_client.mistral_client import MistralClient
+from src.article_retriever.llm.llm_client.openai_client import OpenAIClient
+from src.article_retriever.schemas.llm.llm_template import ExtractionTemplate, SummaryTemplate
+from src.article_retriever.utils.error_handler import ErrorHandler
 
 load_dotenv()
 

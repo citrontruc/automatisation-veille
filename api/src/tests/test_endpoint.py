@@ -2,7 +2,7 @@
 A test script to check connection to the app.
 """
 
-from src.main import app
+from api.src.article_retriever.main import app
 from fastapi.testclient import TestClient
 
 client = TestClient(app)

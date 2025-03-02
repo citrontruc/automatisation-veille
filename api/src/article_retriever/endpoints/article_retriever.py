@@ -5,11 +5,11 @@ Endpoint so our user can specify which articles he wants to retrieves.
 from fastapi import APIRouter, Request
 import json
 
-from src.schemas.input.input_template import ResearchInputSchema
-from src.schemas.output.output_template import ResearchOutputSchema
-from src.research.research_handler import ResearchHandler
-from src.utils.authenticator import Authenticator
-from src.utils.logger import Logger
+from src.article_retriever.schemas.input.input_template import ResearchInputSchema
+from src.article_retriever.schemas.output.output_template import ResearchOutputSchema
+from src.article_retriever.research.research_handler import ResearchHandler
+from src.article_retriever.utils.authenticator import Authenticator
+from src.article_retriever.utils.logger import Logger
 
 
 # We define all the routes related to document treatment

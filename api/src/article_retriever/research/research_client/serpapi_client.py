@@ -3,7 +3,7 @@ A class to handle serpAPI queries
 """
 from serpapi import GoogleSearch
 
-from src.research.research_client.research_client import ResearchClient
+from src.article_retriever.research.research_client.research_client import ResearchClient
 
 
 class SerpapiClient(ResearchClient):
