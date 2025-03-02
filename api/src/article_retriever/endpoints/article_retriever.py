@@ -26,14 +26,21 @@ async def research(request: Request, query: ResearchInputSchema):
     output
         (dict)
     """
+    # Check credentials
     authenticator.check_api_key(request.headers.get("Authorization"))
+    
+    # Research online information for the given user query
     query_dict = query.model_dump()
     logger.log_info(f"Requête envoyée sur le endpoint research avec le contenu suivant : {json.dumps(query_dict)}")
     research_handler = ResearchHandler(query_dict["search_type"], query_dict["llm_type"])
     url_list, content_list = research_handler.search(query_dict["topic"])
-    print(url_list)
+    
+    # Clean content of answers
     clean_content = research_handler.clean_page_content(content_list)
+    answer_dict = []
     for i in range(len(url_list)):
-        if "reddit" not in url_list[i] and "steamcommunity" not in url_list[i]:
-            clean_content[i]["url"] = url_list[i]
-    return {"response" : clean_content}
+        answer_dict.append({"extracted_page" : clean_content[i]})
+        answer_dict[-1]["url"] = url_list[i]
+    
+    # Return response
+    return {"response" : answer_dict}

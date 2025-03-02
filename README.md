@@ -27,4 +27,4 @@ uv run pytest tests/
 
 Looking glass icon image : <a href="https://www.flaticon.com/free-icons/research" title="research icons">Research icons created by ibrandify - Flaticon</a>
 
-## TODO : next step is to try with a nice aoai model with high rate limit and a big context.
+## TODO : Parallelize and batch processing
