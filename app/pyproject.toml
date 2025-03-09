@@ -11,5 +11,6 @@ dependencies = [
     "streamlit>=1.42.2",
     "streamlit-auth>=0.1.7.1",
     "streamlit-extras>=0.5.5",
+    "streamlit-oauth>=0.1.14",
     "structlog>=25.1.0",
 ]

@@ -1,2 +1,2 @@
 #!/bin/bash
-uv run -m streamlit run src/main.py --server.port 8501
+uv run streamlit run src/veille_assistant/main.py --server.port 8501

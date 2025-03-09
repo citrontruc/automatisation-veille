@@ -2,83 +2,72 @@
 Interface for our application : lets the user specify which theme he wants to do research on and displays the summary of said research.
 """
 
-from PIL import Image
-import streamlit as st
-from streamlit_extras.stylable_container import stylable_container
+from dotenv import load_dotenv
+import json
+import os
+
+from api_client.api_client import APIClient
+from utils.error_handler import ErrorHandler
+from front.interface_client import InterFaceClient
+
+load_dotenv()
+
+API_BASE_URL = os.getenv("API_BASE_URL")
+API_KEY = os.getenv("API_KEY")
+
+api_client = APIClient(API_BASE_URL, API_KEY)
+error_handler = ErrorHandler()
+interface_client = InterFaceClient()
 
 
-if "llm_credentials" not in st.session_state:
-    st.session_state["llm_credentials"] = ""
-
-# Set logo of the page
-img = Image.open('src/assets/img/research.png')
-st.set_page_config(page_title="Assistant veille 🔎", page_icon=img, layout="centered", initial_sidebar_state="auto", menu_items=None)
-
-def display_markdown_in_container(container, header_text, paragraph_text):
-    """
-    Displays markdown-styled text in a container
-    input:
-        container (streamlit object)
-        header_text (str)
-        paragraph_text (str)
-    output:
-    """
-    container.markdown(f"<h3 style='color: #000000;'>{header_text}</h3>", unsafe_allow_html=True)  
-    container.markdown(f"<p style='color: #000000;'>{paragraph_text}</p>", unsafe_allow_html=True)
-
-def reset():
-    """
-    Resets information in session state.
-    """
-    st.session_state["llm_credentials"] = ""
+def logout():
+    print("test")
 
 def main():
-    # Welcome message with markdown formatting
-    st.title("AI-powered research")
-    with st.sidebar:
-        img_sidebar = Image.open("src/assets/img/research.png")
-        st.sidebar.image(img_sidebar)
-        # Tell the user how to write his credentials
-        with st.container(): 
-            header_text = "Welcome! What topic do you want to explore?"  
-            paragraph_text = """Choose which LLM you want to use and input your API key for the chosen LLM.""" 
-            display_markdown_in_container(st, header_text, paragraph_text)
-        
-        # Add space using markdown for consistency  
-        st.sidebar.markdown("<hr style='border-top: 1px solid #000000;'>", unsafe_allow_html=True)  
-        with st.container(): display_markdown_in_container(st, "", "")
-        with st.container(): display_markdown_in_container(st, "", "")  
-
-        # Clear conversation button with custom styling
-        with stylable_container(
-            key="reset",
-            css_styles="""
-                button {
-                    background-color:rgb(150, 191, 156);
-                    color: #000000;
-                    border-radius: 42px;
-                    cursor:pointer;
-                }
-            """,
-        ):
-            # Radio button to choose which LLM to use
-            source = st.radio("Select which LLM to choose", ["openai", "mistral", "azure openai"], captions=["", ""])
-            if st.button("Reset →"):
-                reset()
+    interface_client.config_page_favicon("Assistant veille 🔎", 'assets/img/research.png')
     
-    # Main query box
-    llm_query = st.form("llm_query")
-    llm_query.write("On which topic would you want to do some research?")
-    text_input = llm_query.text_input('Enter a topic or a question on which you want to know more.')
-    validate_form = llm_query.form_submit_button('Submit')
+    # Generate sidebar
+    interface_client.generate_sidebar(
+        "assets/img/research.png", 
+        "Welcome! What topic do you want to explore?", 
+        "Choose which LLM you want to use.")
+    llm_choice = interface_client.add_radio_button_in_sidebar("Select which LLM to choose", ["openai", "mistral", "azure openai"], ["", "", ""])
+    interface_client.add_button_to_sidebar("log out →", logout)
 
-    ## Get user query
+    # Get user query
+    interface_client.generate_title("LLM-Augmented search bar 🔎")
+    user_query, validate_form = interface_client.generate_query_box(
+        "llm_query",
+        "On which topic would you want to do some research?",
+        'Enter a topic or a question on which you want to know more.',
+        "Submit")
 
-    ## Do research
-
-    ## Summariez with LLM
-
-    ## Display
+    # Do research
+    if validate_form:
+        api_results = interface_client.wait_for_action(
+            api_client.call_api, 
+            action_text="Searching the internet...", 
+            resolution_text="Search Successful", 
+            headers={}, 
+            content={"topic" : user_query, "llm_type" : llm_choice, "search_type": "serpapi"}, 
+            endpoint="research")
+    
+        ## Display
+        if api_results.status_code != 200:
+            error_handler.api_error(api_results)
+        results_list = json.loads(api_results.content.decode())["response"]
+        print(results_list)
+        if len(results_list) == 0:
+            error_handler.empty_results(user_query)
+        else:
+            for my_result in results_list:
+                interface_client.display_result_value(
+                    title=my_result["extracted_page"]["title"], 
+                    url=my_result["url"], 
+                    date=my_result["extracted_page"]["date"], 
+                    content=my_result["extracted_page"]["summary"], 
+                    website=my_result["extracted_page"]["website_name"])
+                
 
 if __name__ == "__main__":
     main()

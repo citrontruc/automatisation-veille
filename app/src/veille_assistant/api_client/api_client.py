@@ -2,20 +2,16 @@
 Calls an API to retrieve information
 """
 
-from dotenv import load_dotenv
-import os
 import requests
-
-load_dotenv()
 
 
 class APIClient():
     """
     Calls an API to retrieve information
     """
-    def __init__(self):
-        self.API_URL = os.getenv("API_URL")
-        self.API_KEY = os.getenv("API_KEY")
+    def __init__(self, API_BASE_URL, API_KEY):
+        self.API_BASE_URL = API_BASE_URL
+        self.API_KEY = API_KEY
 
     def call_api(self, headers, content, endpoint=""):
         """
@@ -27,5 +23,5 @@ class APIClient():
         output:
             (dict)
         """
-        answer = requests.get(f"{self.API_URL}/{endpoint}", headers=headers, json=content)
+        answer = requests.get(f"{self.API_BASE_URL}/{endpoint}", headers=headers | {"Authorization" : self.API_KEY}, json=content)
         return answer
