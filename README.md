@@ -6,7 +6,13 @@ The objective of this project is to create an LLM-enhanced web search.
 
 To a given user query, the application first looks online for articles on the topic and then summarizes them with an LLM in order to help the user have clear, concise and reliable information.
 
+Flow diagram of the application :
+
 ![flow diagram](flow_diagram.png)
+
+Main page of the application :
+
+![main_page](main_page.png)
 
 ## Content of the repository
 
