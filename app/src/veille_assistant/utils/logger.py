@@ -8,7 +8,7 @@ from pathlib import Path
 import structlog
 
 
-if not os.path.exists("logs"): 
+if not os.path.exists("logs"):
     os.makedirs("logs")
 
 class Logger:

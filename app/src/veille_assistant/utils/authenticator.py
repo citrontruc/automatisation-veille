@@ -1,5 +1,5 @@
 """
-An object to identify the user with Azure or GCP.
+An object to identify the user with Azure or GCP using streamlit oauth.
 """
 
 from dotenv import load_dotenv

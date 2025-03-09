@@ -37,5 +37,6 @@ class Authenticator:
     def check_access_token(self, access_token):
         """
         Uses Azure entra-id to check if the user access token is a valid token
+        TODO
         """
         pass
