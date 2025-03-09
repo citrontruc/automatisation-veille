@@ -4,10 +4,10 @@ A class to handle the interactions between our API and our Research client
 from dotenv import load_dotenv
 import os
 
-from src.article_retriever.research.research_client.newsapi_client import NewsapiClient
-from src.article_retriever.research.research_client.serpapi_client import SerpapiClient
-from src.article_retriever.llm.llm_handler import LLMHandler
-from src.article_retriever.utils.error_handler import ErrorHandler
+from research.research_client.newsapi_client import NewsapiClient
+from research.research_client.serpapi_client import SerpapiClient
+from llm.llm_handler import LLMHandler
+from utils.error_handler import ErrorHandler
 
 load_dotenv()
 
@@ -43,15 +43,16 @@ class ResearchHandler:
             self.error_handler.research_error()
         return url_list, content_list
 
-    def clean_page_content(self, content_list):
+    def clean_page_content(self, content_list, topic):
         """
         Cleans the content of a list of html page in order to make it easier to use it in our search.
         input:
             content_list (list)
+            topic (str)
         output:
             clean_content_list (list)
         """
         clean_content_list = []
         for html_page in content_list:
-            clean_content_list.append(self.llm_handler.clean_html_content(html_page))
+            clean_content_list.append(self.llm_handler.clean_html_content(html_page, topic))
         return clean_content_list

@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 from langchain_core.output_parsers import JsonOutputParser
 import os
 
-from src.article_retriever.llm.llm_client.azure_openai_client import AzureOpenAIClient
-from src.article_retriever.llm.llm_client.mistral_client import MistralClient
-from src.article_retriever.llm.llm_client.openai_client import OpenAIClient
-from src.article_retriever.schemas.llm.llm_template import ExtractionTemplate, SummaryTemplate
-from src.article_retriever.utils.error_handler import ErrorHandler
+from llm.llm_client.azure_openai_client import AzureOpenAIClient
+from llm.llm_client.mistral_client import MistralClient
+from llm.llm_client.openai_client import OpenAIClient
+from schemas.llm.llm_template import ExtractionTemplate, SummaryTemplate
+from utils.error_handler import ErrorHandler
 
 load_dotenv()
 
@@ -79,7 +79,7 @@ class LLMHandler:
         - **DO NOT** add any fields other than the ones specified."""
         return self.ask_llm_structured(prompt, system_prompt, SummaryTemplate)
     
-    def clean_html_content(self, html_page):
+    def clean_html_content(self, html_page, topic):
         """
         A method to clean an html page and return only the text as markdown
         input:
@@ -95,11 +95,13 @@ class LLMHandler:
             for chunk_number in range(len(html_page) // self.MAX_LLM_INPUT_SIZE + 1):
                 text_chunk = html_page[max(0, chunk_number*self.MAX_LLM_INPUT_SIZE - 100):min(len(html_page), (chunk_number+1)*self.MAX_LLM_INPUT_SIZE+100)]
                 prompt = f"""Here is a chunk of an HTML page to extract content from : {text_chunk}.
-                Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}."""
+                Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}.
+                Your answer should help someone who makes a research on the following topic : {topic}"""
                 system_prompt = f"""You extract the complete and unadulterated content of an html page. You should retrieve content without modifying it.
                 Your answers should have the following form : {template_parser.get_format_instructions()}.
-                IMPORTANT : 
-                - **DO NOT** add any fields other than the ones specified."""
+                IMPORTANT :
+                - **DO NOT** add any fields other than the ones specified.
+                - Focus on informations on the following topic : {topic}"""
                 inter_answer = self.ask_llm_structured(prompt, system_prompt, ExtractionTemplate)
                 for field_name in inter_answer.keys():
                     if inter_answer[field_name] != "":
@@ -108,11 +110,13 @@ class LLMHandler:
             return inter_chunk_answer
         else:
             prompt = f"""Here is the HTML page to extract content from : {html_page}.
-            Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}."""
+            Don't forget, your answer should have the following form : {template_parser.get_format_instructions()}.
+            Your answer should help someone who makes a research on the following topic : {topic}"""
             system_prompt = f"""You extract the complete and unadulterated content of an html page. You should retrieve content without modifying it.
             Your answers should have the following form : {template_parser.get_format_instructions()}.
             IMPORTANT : 
-            - **DO NOT** add any fields other than the ones specified."""
+                - **DO NOT** add any fields other than the ones specified.
+                - Focus on informations on the following topic : {topic}"""
             answer = self.ask_llm_structured(prompt, system_prompt, ExtractionTemplate)
             print(answer)
             return answer

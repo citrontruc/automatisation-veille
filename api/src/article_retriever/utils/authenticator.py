@@ -8,7 +8,7 @@ from fastapi.security import APIKeyHeader
 import hashlib
 import os
 
-from src.article_retriever.utils.error_handler import ErrorHandler
+from utils.error_handler import ErrorHandler
 
 load_dotenv()
 

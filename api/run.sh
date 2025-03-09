@@ -1,2 +1,2 @@
 #!/bin/bash
-uv run -m src.main
+uv run src/article_retriever/main.py

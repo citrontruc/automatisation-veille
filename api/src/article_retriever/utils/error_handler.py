@@ -2,8 +2,8 @@
 Handles error cases and returns the appropriate error codes.
 """
 
-from src.article_retriever.schemas.exception.exception_template import BasicException
-from src.article_retriever.utils.logger import Logger
+from schemas.exception.exception_template import BasicException
+from utils.logger import Logger
 
 
 class ErrorHandler:

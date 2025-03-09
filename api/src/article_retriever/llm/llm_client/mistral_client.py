@@ -3,7 +3,7 @@ A class to create an llm client that can interact with a mistral model
 """
 from langchain_mistralai import ChatMistralAI
 
-from src.article_retriever.llm.llm_client.llm_client import LLMClient
+from llm.llm_client.llm_client import LLMClient
 
 
 class MistralClient(LLMClient):

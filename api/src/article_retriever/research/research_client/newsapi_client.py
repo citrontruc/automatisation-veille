@@ -5,7 +5,7 @@ TODO : NewsAPI lets you do all sorts of research (by popularity, by topic, by da
 """
 import requests
 
-from src.article_retriever.research.research_client.research_client import ResearchClient
+from research.research_client.research_client import ResearchClient
 
 
 class NewsapiClient(ResearchClient):

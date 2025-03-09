@@ -5,11 +5,11 @@ Endpoint so our user can specify which articles he wants to retrieves.
 from fastapi import APIRouter, Request
 import json
 
-from src.article_retriever.schemas.input.input_template import ResearchInputSchema
-from src.article_retriever.schemas.output.output_template import ResearchOutputSchema
-from src.article_retriever.research.research_handler import ResearchHandler
-from src.article_retriever.utils.authenticator import Authenticator
-from src.article_retriever.utils.logger import Logger
+from schemas.input.input_template import ResearchInputSchema
+from schemas.output.output_template import ResearchOutputSchema
+from research.research_handler import ResearchHandler
+from utils.authenticator import Authenticator
+from utils.logger import Logger
 
 
 # We define all the routes related to document treatment
@@ -31,12 +31,12 @@ async def research(request: Request, query: ResearchInputSchema):
     
     # Research online information for the given user query
     query_dict = query.model_dump()
-    logger.log_info(f"Requête envoyée sur le endpoint research avec le contenu suivant : {json.dumps(query_dict)}")
+    logger.log_info(f"Request received on endpoint research with the following content : {json.dumps(query_dict)}")
     research_handler = ResearchHandler(query_dict["search_type"], query_dict["llm_type"])
     url_list, content_list = research_handler.search(query_dict["topic"])
     
     # Clean content of answers
-    clean_content = research_handler.clean_page_content(content_list)
+    clean_content = research_handler.clean_page_content(content_list, query_dict["topic"])
     answer_dict = []
     for i in range(len(url_list)):
         answer_dict.append({"extracted_page" : clean_content[i]})

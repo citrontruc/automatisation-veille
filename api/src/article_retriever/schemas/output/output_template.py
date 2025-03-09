@@ -4,7 +4,7 @@ A class to define what a valid output message is.
 from pydantic import BaseModel
 from typing import List
 
-from src.article_retriever.schemas.llm.llm_template import ExtractionTemplate
+from schemas.llm.llm_template import ExtractionTemplate
 
 
 class ResearchPageSchema(BaseModel):

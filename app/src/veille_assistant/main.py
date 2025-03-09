@@ -24,6 +24,8 @@ def logout():
     print("test")
 
 def main():
+    # TODO : authentication of users
+
     interface_client.config_page_favicon("Assistant veille 🔎", 'assets/img/research.png')
     
     # Generate sidebar

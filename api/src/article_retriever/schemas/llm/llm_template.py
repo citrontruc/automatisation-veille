@@ -15,7 +15,11 @@ class ExtractionTemplate(BaseModel):
     #date: datetime.date = Field("The date the article was written on.")
     date: str = Field("The date the article was written on. If you don't find the information, return ''.")
     #content: str = Field("The main content of the article without login buttons, recommended reads... If you don't find the information, return ''.")
-    summary: str = Field("A concise ten sentence summary of the meaningful components of the article.")
+    summary: str = Field("""
+                         A concise seven sentence summary of the meaningful components of the article.
+                         - **DO** give a summary of the information.
+                         - **DO NOT** say "the article", speak as if the content was your opinion.
+                         - **DO** give the summary without an introduction.""")
 
 class IndividualSummaryTemplate(BaseModel):
     """
